@@ -57,6 +57,17 @@ def prepare_logs():
     '''
     # Grabs dataframe from mysql and assigns it to a variable
     df = acquire_logs()
-    # Reformats date and time
-    
+    # Reformat date and time
+    df.index = pd.to_datetime(df.date + " " + df.time)
+    #drop date and time columns
+    df.drop(columns=['date', 'time'], inplace=True)
+    # Replace program_id values with names of program
+    df['program_id'] = df.program_id.replace({1: 'full stack php', 2: 'full stack java', 3:'data science', 4:'front end' })
+    #add day of week and month columns for exploration
+    df['day_of_week'] = df.index.day_name()
+    df['month'] = df.index.month_name()
+
+    return df
+
+
 
